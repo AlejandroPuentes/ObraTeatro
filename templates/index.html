@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1 class="titulop">Grupo de Teatro Universidad Distrital</h1>
+    </header>
+    <nav>
+        <a href="index" class="nav-enlace">Home</a>
+        <a href="#" class="nav-enlace">Consejerias</a>
+        <a href="#" class="nav-enlace">Contactenos</a>
+
+    </nav>
+    <hr>
+
+    <section>
+        <div class="container">
+            <div class="centradito">
+                <form method="post" action="{{url_for('procesar')}}">
+                    <label for='nombre'>Nombre</label><br/>
+                    <input type="text" placeholder='Nombre' name='nombre' id='nombre' required/><br/>
+                    <label for='apellido'>Apellido</label><br/>
+                    <input type="text" placeholder='Apellido' name='apellido' id='apellido' required/><br/>
+                    <label for='tipoIdenfi'>Tipo de </label><br/>
+                    <select id='tipoIdenfi' name='tipoIdenfi'>
+                        <option value="C.c">Cedula de ciudadania</option>
+                        <option value="T.i">Tarjeta de indentidad</option>
+                    </select><br/>
+                    <label for="identificacion">Identificacion</label><br/>
+                    <input type="text" placeholder='Identificacion' name='identificacion' id="identificacion"><br/>
+                    <label for='email'>Email</label><br/>
+                    <input type='email' name='email' id='email'><br/>
+                    <label for='codigo'>Codigo</label><br/>
+                    <input type='codigo' name='codigo' id='codigo'><br/>
+                    <label for='fecha'>Fecha de nacimiento</label><br/>
+                    <input type="date" name="fecha" id="fecha" min="25/03/1900" max="25/03/2030" step="1" />
+                    <button class="btn-Enviar">Enviar</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+    <hr>
+
+
+</body>
+
+</html>
