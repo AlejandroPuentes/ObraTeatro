@@ -6,7 +6,7 @@ class EstudianteDAO:
     def __init__(self):
         self.conexion = ConexionBD()
 
-    def guardar(self, estudiante:Estudiante, carrera, tipoid):
+    def guardar(self, estudiante, carrera, tipoid):
         conexion = self.conexion.conectar()
         sql = (f'INSERT INTO \"Estudiante\" VALUES' +
                 f'({estudiante.identificacion},' +
@@ -14,9 +14,10 @@ class EstudianteDAO:
                 f'{tipoid},' +
                 f"'{estudiante.nombre}'," +
                 f"'{estudiante.apellido}'," +
-                f'{estudiante.fnacimiento},' +             
+                f"to_date({estudiante.fnacimiento}, 'yyyy-mm-dd')," +             
                 f'{estudiante.codigo},'+       
                 f"'{estudiante.correo}')")
-        print(sql)
-        conexion.cursor().execute(sql)
-        conexion.desconectar()
+        cursor = conexion.cursor()
+        cursor.execute(sql)
+        cursor.execute('commit')
+        self.conexion.desconectar()

@@ -17,8 +17,9 @@ def procesar():
     identificacion =request.form['identificacion']
     correo =request.form['email']
     codigo =request.form['codigo']
-    yy, mm, dd = request.form['fecha'].split('-')
-    fecha = f"'{dd}/{mm}/{yy}'"
+    '''yy, mm, dd = request.form['fecha'].split('-')
+    fecha = f"'{dd}/{mm}/{yy}'"'''
+    fecha = f"'{request.form['fecha']}'"
     estudiante = Estudiante(nombre,apellidos,identificacion,fecha,codigo,correo)
     eDAO = EstudianteDAO()
     eDAO.guardar(estudiante, 1, 1)

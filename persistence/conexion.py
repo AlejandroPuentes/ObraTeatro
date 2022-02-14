@@ -9,6 +9,7 @@ class ConexionBD:
 
 
     def conectar(self):
+        
         self.conexion =  cx_Oracle.connect(user=self.usuario,  password=self.clave,
                                dsn="127.0.0.1")
         return self.conexion
