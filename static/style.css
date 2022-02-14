@@ -1,0 +1,64 @@
+header {
+    background: rgb(77, 23, 23);
+    color: white;
+}
+
+.nav-enlace {
+    display: inline-block;
+    background: #2c0e02;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.nav-enlace:hover {
+    background: #192525;
+}
+
+.btn-Enviar {
+    background: rgb(27, 27, 27);
+    width: 30%;
+    padding: 10px;
+    margin: 5px auto;
+    display: block;
+    padding: 10px;
+    color: rgb(255, 248, 248);
+    border: 1px solid #000;
+    border-radius: 7px;
+}
+
+.btn-Enviar:hover {
+    Background: rgb(94, 48, 48);
+}
+
+.centradito {
+    color: #fff;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.titulop {
+    text-align: center;
+}
+
+.container {
+    margin: 30px auto;
+    padding: 20px;
+    width: 50%;
+    border: 1px solid #fff;
+    border-radius: 30px;
+    justify-content: center;
+    text-align: center;
+}
+
+nav {
+    background: rgb(163, 54, 54);
+    padding: 15px;
+    border-top: 1px solid white;
+    display: flex;
+    justify-content: space-around;
+}
+
+body {
+    background: rgb(102, 39, 39);
+}
