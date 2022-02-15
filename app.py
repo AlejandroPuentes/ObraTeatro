@@ -1,5 +1,6 @@
 from flask import Flask,  render_template, redirect, request
 from data.estudiante import Estudiante
+from data.correo import Correo
 from persistence.estudianteDAO import EstudianteDAO
 app   = Flask(__name__)
 
@@ -21,9 +22,11 @@ def procesar():
     fecha = f"'{dd}/{mm}/{yy}'"'''
     fecha = f"'{request.form['fecha']}'"
     estudiante = Estudiante(nombre,apellidos,identificacion,fecha,codigo,correo)
-    eDAO = EstudianteDAO()
-    eDAO.guardar(estudiante, 1, 1)
-    return render_template('index.html')
+    #eDAO = EstudianteDAO()
+    #eDAO.guardar(estudiante, 1, 1)
+    envioCorreo=Correo(nombre,correo)
+    envioCorreo.send()
+    return render_template('envio.html',n=nombre,apellido=apellidos,horas="10:20",)
 
 
 
