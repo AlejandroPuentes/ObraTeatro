@@ -14,7 +14,7 @@ class Correo:
         self.html=None
 
 
-    def mensaje(self):
+    def mensaje(self, fecha, teatro):
         msm=MIMEMultipart("alternative")
         msm["Subject"]="Registro Exitoso"
         msm["From"]=self.user_mail
@@ -23,8 +23,9 @@ class Correo:
 
         self.html= f'''
         <html>
-            Buen dia <i>{self.name}</i> te has registrado exitosamente al grupo de la universidad<br>
-            Que tenga un Excelente dia...
+            Buen día <i>{self.name}</i> se ha registrado exitosamente al grupo de teatro de la Universidad Distrital<br>
+            Recuerde presentarse en el teatro {teatro} en la fecha: {fecha}.<br>
+            Que tenga un excelente día.
         </html> '''
         parte_html=MIMEText(self.html,"html")
         
@@ -32,8 +33,8 @@ class Correo:
         return msm
 
 
-    def send(self):
-        envi=self.mensaje()
+    def send(self, fecha, teatro):
+        envi=self.mensaje(fecha, teatro)
         ssl_context = ssl.create_default_context()
         service = smtplib.SMTP_SSL(self.smtp_server_domain, self.port, context=ssl_context)
         try:

@@ -6,6 +6,7 @@ class ConexionBD:
         self.clave = clave
         self.usuario = usuario
         self.conexion = None
+        
 
 
     def conectar(self):
