@@ -1,3 +1,5 @@
+from email import encoders
+from email.mime.base import MIMEBase
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -30,6 +32,16 @@ class Correo:
         parte_html=MIMEText(self.html,"html")
         
         msm.attach(parte_html)
+        archivo ="form.pdf"
+        with open(archivo,"rb") as adjunto:
+            contenido = MIMEBase("application", "octet-stream")
+            contenido.set_payload(adjunto.read())
+        
+        encoders.encode_base64(contenido)
+        contenido.add_header("Content-Disposition", 
+                            f"attachment; filename={archivo}",)
+        msm.attach(contenido)
+
         return msm
 
 
@@ -40,8 +52,11 @@ class Correo:
         try:
             service.login(self.user_mail, self.password)
             print('sesion iniciada')
-        except:
+        except Exception:
                 print('no se ha podiodo iniciar sesion')
+                print(Exception)
+        
+
         
         try:
             service.sendmail(self.user_mail,self.email,envi.as_string())
@@ -52,5 +67,5 @@ class Correo:
         service.quit()
 
 if __name__ == '__main__':
-    email=Correo()
-    email.send()
+    email=Correo('alejo',"programpros0222@gmail.com")
+    email.send('21-05-65','agustiniano')

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/style.css">
-    <title>Document</title>
+    <title>Viaticos</title>
 </head>
 
 <body>
@@ -14,8 +14,8 @@
         <h1 class="titulop">Grupo de Teatro Universidad Distrital</h1>
     </header>
     <nav>
-        <a href="{{veri[0]}}" class="nav-enlace">Asistencia</a>
-        <a href="{{veri[1]}}" class="nav-enlace">Viaticos</a>
+        <a href="{{veri[0]}}" class="nav-enlace">Home</a>
+        <a href="{{veri[1]}}" class="nav-enlace">Registro</a>
         <a href="{{veri[2]}}" class="nav-enlace">Contactenos</a>
 
     </nav>
@@ -24,12 +24,9 @@
     <section>
         <div class="container">
             <div class="centradito">
-                <h3>{{tiObra}}</h3>
-                <h4>{{nombre}}</h4>
+                <form method="post" action="{{url_for('muestraPDF')}}">
 
-                <h4>{{hora}}</h4>
-                <form>
-                    <table border="2">
+                    <table border="1">
                         {%for id,titulo in valores%}
                         <tr>
 
@@ -48,9 +45,13 @@
                         {% endfor %}
 
                     </table>
+                    <button onclick="">Enviar</button>
                 </form>
-            </div>
+                <iframe src="{{ url_for('static', filename='form.pdf' ) }}" frameborder="0"></iframe>
 
+
+
+            </div>
         </div>
 
     </section>
