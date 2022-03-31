@@ -2,15 +2,30 @@
 from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from os.path import join, dirname, realpath
+import os.path
+import shutil
+
+
+
+
 class PDF:
 
     def __init__(self):
+        self.canvas = None
+
+    def guardado(self):
         self.canvas = canvas.Canvas("form.pdf", pagesize=letter)
         self.canvas.setLineWidth(.3)
         self.canvas.setFont('Helvetica', 12)
 
-    
+    def movidaPDF(self):
+        source = r'C:\Users\User\Documents\Bases de Datos\ObraTeatro\form.pdf'
+        destination = r'C:\Users\User\Documents\Bases de Datos\ObraTeatro\static\form.pdf'
+        shutil.move(source, destination)
+
     def carta(self,data=None):
+        self.guardado()
         self.canvas.drawString(30,750,'CARTA IQUIDACION DE VIATICOS')
         self.canvas.drawString(30,735,'Bogotá 2022')
         self.canvas.drawString(500,750,"27/10/2022")
@@ -47,6 +62,11 @@ class PDF:
         self.canvas.line(90,y-100,300,y-100)
         self.canvas.drawString(110,y-110,"Firma")
         self.canvas.save()
+        self.movidaPDF()
 
 pdf = PDF()
 pdf.carta()
+'''number='informe'
+pdf_name = number + ".pdf"
+save_name = os.path.join(os.path.expanduser("~"), "static/", pdf_name)
+print(save_name)'''

@@ -34,11 +34,11 @@ def formularioPrincipal():
 @app.route('/procesar',methods=['POST'])
 def procesar():
     rang=verificarFe()   
-    print(rang)
     identificacion =request.form['identificacion']
     correo =request.form['email'].upper()
     valores = []
     if (identificacion, correo) in consultasbd.empleados_con_acceso():
+        print('pasa y esta mal XD')
         resultado = consultasbd.encabezado(identificacion)
         if len(resultado) > 0:#Hay obra activa
             obra, docente = resultado[0]
@@ -74,7 +74,8 @@ def procesar():
             print('------------**********',valores)
             veri = ['#','#','certifica']
             return render_template('envio.html',veri=veri,valores=valores,hora=datetime.now().strftime("%H:%M:%S"))
-
+    else:
+        return render_template('index.html');
 
 
 
