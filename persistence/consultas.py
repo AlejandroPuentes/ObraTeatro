@@ -89,7 +89,7 @@ class Consultas:
         resultado = list(cursor.execute(sql))
         self.conexion.desconectar() 
         return resultado
-        return resultado
+        
 
 
         
