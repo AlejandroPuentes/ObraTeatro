@@ -24,7 +24,7 @@ class PDF:
         destination = r'C:\Users\User\Documents\Bases de Datos\ObraTeatro\static\form.pdf'
         shutil.move(source, destination)
 
-    def carta(self,data=None):
+    def carta(self,docente,data=None):
         self.guardado()
         self.canvas.drawString(30,750,'CARTA IQUIDACION DE VIATICOS')
         self.canvas.drawString(30,735,'Bogotá 2022')
@@ -42,23 +42,17 @@ class PDF:
         self.canvas.drawString(60,610,'TAl y terminan  el dia Tal.')
 
         data = [("NOMBRE",'Alejandro'), ("NOTA 1",4.2), ("NOTA 1",4.2), ("NOTA 1",4.2)]
-        x=250
+        x=100
         y=590
         valor =0.0
         for i in range(len(data)):
-            self.canvas.drawString(x,y,data[i][0]+" ")
-            x=x+100
-            self.canvas.drawString(x,y,str(data[i][1])+"")
-            if i>0:
-                valor=+data[i][1]
-            x=250
+            for j in range(len(i)):
+                self.canvas.drawString(x,y,data[i][0]+" ")
+                x=x+30
+            x=100
             y=y-30
-            
-        self.canvas.line(200,y,600,y)
-        self.canvas.drawString(250,y-20,"Total")
-        self.canvas.drawString(360,y-20,str(valor))
 
-        self.canvas.drawString(110,y-100,"XXXXX")
+        self.canvas.drawString(110,y-100,docente)
         self.canvas.line(90,y-100,300,y-100)
         self.canvas.drawString(110,y-110,"Firma")
         self.canvas.save()
