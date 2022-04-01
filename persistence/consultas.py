@@ -147,7 +147,64 @@ class Consultas:
         resultado = list(cursor.execute(sql))
         self.conexion.desconectar() 
         return resultado
-        
 
+    def correos_certificados(self, idobra):
+        conexion = self.conexion.conectar()
+        sql = (f'''SELECT DISTINCT E."correo" correo, E."nombre"
+                   FROM "Estudiante" E, "AsistenciaEstudiante" A, "Calendario" C, "TipoCalendario" T
+                   WHERE E."CodEstudiante" = A."CodEstudiante" AND 
+                         C."idObra" = A."idObra" AND 
+                         C."conseCalendario" = A."conseCalendario" AND 
+                         T."idTipoCalen" = C."idTipoCalen" AND 
+                         A."idObra" = {idobra} ''')
+        cursor = conexion.cursor()
+        resultado = list(cursor.execute(sql))
+        self.conexion.desconectar() 
+        return resultado
+
+    def dataCertificados(self,idobra):
+        conexion = self.conexion.conectar()
+        sql = (f'''SELECT DISTINCT E."correo" correo, E."nombre" || ' ' || E."apellido" estudiante, P."nombrePersonaje"
+                    FROM "Estudiante" E, "AsistenciaEstudiante" A, "Calendario" C, "TipoCalendario" T, "PersonajeEstudiante" PE, "Personaje" P
+                    WHERE E."CodEstudiante" = A."CodEstudiante" AND 
+                        C."idObra" = A."idObra" AND 
+                        C."conseCalendario" = A."conseCalendario" AND
+                        PE."CodEstudiante" =  E."CodEstudiante" AND
+                        P."idObra" = PE."idObra" AND
+                        P."idPersonaje" = PE."idPersonaje" AND
+                        T."idTipoCalen" = C."idTipoCalen" AND 
+                        A."idObra" = {idobra} ''')        
+        cursor = conexion.cursor()
+        resultado = list(cursor.execute(sql))
+        self.conexion.desconectar() 
+        return resultado
+
+    def desactivar_obra(self, idobra):
+        conexion = self.conexion.conectar()
+        sql = (f'''UPDATE "Obra"
+                   SET "estado" = 0
+                   WHERE "idObra" = {int(idobra)}''')
+        cursor = conexion.cursor()
+        cursor.execute(sql)
+        cursor.execute('commit')
+        self.conexion.desconectar()
+    
+    def certificado_individual(self, idobra, codest):
+        conexion = self.conexion.conectar()
+        sql = (f'''SELECT DISTINCT E."correo" correo, E."nombre" || ' ' || E."apellido" estudiante, P."nombrePersonaje"
+                   FROM "Estudiante" E, "AsistenciaEstudiante" A, "Calendario" C, "TipoCalendario" T, "PersonajeEstudiante" PE, "Personaje" P
+                   WHERE E."CodEstudiante" = A."CodEstudiante" AND 
+                         C."idObra" = A."idObra" AND 
+                         C."conseCalendario" = A."conseCalendario" AND
+                         PE."CodEstudiante" =  E."CodEstudiante" AND
+                         P."idObra" = PE."idObra" AND
+                         P."idPersonaje" = PE."idPersonaje" AND
+                         T."idTipoCalen" = C."idTipoCalen" AND 
+                         A."idObra" = {idobra} AND
+                         E."CodEstudiante" = {codest} ''')
+        cursor = conexion.cursor()
+        resultado = list(cursor.execute(sql))
+        self.conexion.desconectar() 
+        return resultado
 
         

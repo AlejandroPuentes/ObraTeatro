@@ -20,7 +20,7 @@
             <button class="btn-Enviar">generar certificados</button>
         </div>
         <div>
-            <form method="post" action="">
+            <form method="get" action="final">
                 <input type="text" name="codigo">
                 <select name="select">
                     {%for id,titulo in valores%}
@@ -29,6 +29,7 @@
                   </select>
                 <button>Generar</button>
             </form>
+
         </div>
     </section>
     <hr>

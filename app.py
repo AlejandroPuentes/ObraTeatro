@@ -3,6 +3,7 @@ from flask import Flask,  render_template, redirect, request
 from data.estudiante import Estudiante
 from data.correo import Correo
 from data.PDF import PDF
+from data.PDF2 import PDF2
 from persistence.consultas import Consultas
 import cx_Oracle
 app   = Flask(__name__)
@@ -85,9 +86,10 @@ def viatic():
     if request.method=="POST":
         pdf = '/static/form.pdf'  
         data= consultasbd.pdfviatico(idobra) 
+        print(data)
         Gpdf= PDF()
-        Gpdf.carta(data)
-        #desactivar obra 
+        Gpdf.carta(nombre_docente,data)
+        consultasbd.desactivar_obra(idobra)        
     return render_template('viaticos.html',valores=valores,pdf=pdf)
 
 @app.route('/certifica', methods=['GET','POST'])
@@ -100,7 +102,36 @@ def certifica():
         print (valores)
         return render_template('certificados2.html', valores=valores)
     return render_template('certificados.html')
-    
+
+@app.route('/envioCorr')
+def envioCorr():
+    global identificacion, nombre_docente, idobra
+    ## ojo  con este valor
+    Correos=consultasbd.correos_certificados(1)
+    print (Correos)
+    for i,x in Correos:
+        
+        data=consultasbd.dataCertificados(idobra)
+        if data:
+            Gpdf= PDF2()
+            print(data)
+            Gpdf.carta(nombre_docente,data)
+            corre=Correo(x,i)
+            corre.send()        
+    return render_template('certificados.html')
+
+
+
+@app.route('/final')
+def final():
+    global identificacion, nombre_docente, idobra
+    codigo=request.args.get('codigo')
+    print(codigo)
+    data=consultasbd.certificado_individual(idobra,codigo)    
+    Gpdf= PDF2()
+    print(data)
+    pdf='/static/Certificado.pdf'
+    return render_template('certificados.html',var=data,pdf=pdf)
 
 
 

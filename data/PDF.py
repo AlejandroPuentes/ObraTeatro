@@ -24,7 +24,7 @@ class PDF:
         destination = r'C:\Users\User\Documents\Bases de Datos\ObraTeatro\static\form.pdf'
         shutil.move(source, destination)
 
-    def carta(self,docente,data=None):
+    def carta(self,docente,data):
         self.guardado()
         self.canvas.drawString(30,750,'CARTA IQUIDACION DE VIATICOS')
         self.canvas.drawString(30,735,'Bogotá 2022')
@@ -41,16 +41,20 @@ class PDF:
         self.canvas.drawString(60,630,'de los viaticos de los estudiantes de la obra TAL, los cuales inician el dia')
         self.canvas.drawString(60,610,'TAl y terminan  el dia Tal.')
 
-        data = [("NOMBRE",'Alejandro'), ("NOTA 1",4.2), ("NOTA 1",4.2), ("NOTA 1",4.2)]
-        x=100
+        ##datas=[('ALBERTO ACOSTA', 'MERACOPIA2000@GMAIL.COM', '2017102000', 2, 2),('ALBERTO maria', 'MERACOPIA2000@GMAIL.COM', '2017102000', 2, 2),('Jose ACOSTA', 'MERACOPIA2000@GMAIL.COM', '2017102000', 2, 2)]
+        x=30
         y=590
         valor =0.0
-        for i in range(len(data)):
-            for j in range(len(i)):
-                self.canvas.drawString(x,y,data[i][0]+" ")
-                x=x+30
-            x=100
-            y=y-30
+        for i in (data):            
+            nombre,correo,codigo,seciones,horas = (i)
+            fila = nombre+'      '+correo+'      '+codigo+'      '+str(seciones)+'      '+str(horas)
+            self.canvas.drawString(x,y,fila+" ")            
+            y=y-10
+            self.canvas.line(20,y,600,y)
+            y=y-20
+            x=30
+                
+            
 
         self.canvas.drawString(110,y-100,docente)
         self.canvas.line(90,y-100,300,y-100)
@@ -58,8 +62,9 @@ class PDF:
         self.canvas.save()
         self.movidaPDF()
 
-'''pdf = PDF()
-pdf.carta()'''
+pdf = PDF()
+data=[]
+pdf.carta("jorge melo",data)
 '''number='informe'
 pdf_name = number + ".pdf"
 save_name = os.path.join(os.path.expanduser("~"), "static/", pdf_name)
