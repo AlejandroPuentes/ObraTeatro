@@ -7,24 +7,10 @@ from persistence.consultas import Consultas
 import cx_Oracle
 app   = Flask(__name__)
 consultasbd = Consultas()
-
-
-def verificarFe(hora1=None,hora22=None):
-    f1 =datetime.now().strftime("%H:%M:%S")
-    f2H = 8
-    f2m = 30
-    f2s = 15
-    hora=datetime(year=2022 ,month=3,day=30,hour =f2H, minute=f2m, second=f2s).strftime("%H:%M:%S")
-    hora2=datetime(year=2022 ,month=3,day=30,hour =f2H+2, minute=f2m+20, second=f2s).strftime("%H:%M:%S")
-    
-    if hora<f1 and hora2>f1 :
-        return   ['asiste','#','#']
-    elif f1>hora2:
-        return ['#','viatic','#']
-    return ['#','#','certifica']
-
-ultima_fecha = datetime(2022, 2, 17, 7)
-#cx_Oracle.init_oracle_client(r"C:\oraclexe\app\oracle\product\Cliente18")
+identificacion = ''
+nombre_docente = ''
+idobra = ''
+consecutivo_calendario = ''
 
 @app.route('/')
 def formularioPrincipal():
@@ -32,19 +18,17 @@ def formularioPrincipal():
 
 
 @app.route('/procesar',methods=['POST'])
-def procesar():
-    rang=verificarFe()   
+def procesar(): 
+    global identificacion, nombre_docente, idobra, consecutivo_calendario
     identificacion =request.form['identificacion']
     correo =request.form['email'].upper()
     valores = []
     if (identificacion, correo) in consultasbd.empleados_con_acceso():
-        print('pasa y esta mal XD')
-        resultado = consultasbd.encabezado(identificacion)
+        nombre_docente, correo_docente = consultasbd.info_docente(identificacion)[0]
+        resultado = consultasbd.obra_activa(identificacion)
         if len(resultado) > 0:#Hay obra activa
-            obra, docente = resultado[0]
-            fechas_eventos = consultasbd.obtener_fechas_horas(obra)
-            idobra = -1
-            cons = -1
+            idobra, titulo_obra = resultado[0]
+            fechas_eventos = consultasbd.obtener_fechas_horas(idobra)
             fecha_actual = datetime.now()
             for ido, consc, fechai, fechaf in fechas_eventos:
                 di, moi, ai, hi, mi = fechai.split()
@@ -53,9 +37,8 @@ def procesar():
                 ffin = datetime(int(af), int(mof), int(df), int(hf), int(mf))
                 if fecha_actual > finicio and fecha_actual < ffin:
                     veri = ['asiste','#','#']
-                    idobra = ido
-                    cons = consc
-                    return render_template('envio.html',idObra=idobra,consC=cons,veri=veri,nombre=docente, valores=valores,hora=datetime.now().strftime("%H:%M:%S"),tiObra=obra)
+                    consecutivo_calendario = consc
+                    return render_template('envio.html',veri=veri,nombre=nombre_docente,hora=datetime.now().strftime("%H:%M:%S"),tiObra=titulo_obra)
             else:
                 ido, consc, fechai, fechaf = fechas_eventos[-1]
                 df, mof, af, hf, mf = fechaf.split()
@@ -63,17 +46,12 @@ def procesar():
                 if fecha_actual > ffin:
                     veri = ['#','viatic','#']
                     idobra = ido
-                    cons = consc
-                    return render_template('envio.html',idObra=idobra,consC=cons,veri=veri,nombre=docente, valores=valores,hora=datetime.now().strftime("%H:%M:%S"),tiObra=obra)
-            veri = ['#', '#', '#']
-            return render_template('envio.html',veri=veri,nombre=docente, valores=valores,hora=datetime.now().strftime("%H:%M:%S"),tiObra=obra)
-
-           
+                    consecutivo_calendario = consc
+                    return render_template('envio.html',veri=veri,nombre=nombre_docente,hora=datetime.now().strftime("%H:%M:%S"),tiObra=titulo_obra)    
         else: #No hay obras activas
             valores = consultasbd.obras_inactivas(identificacion)
-            print('------------**********',valores)
-            veri = ['#','#','certifica']
-            return render_template('envio.html',veri=veri,valores=valores,hora=datetime.now().strftime("%H:%M:%S"))
+            veri = ['#','#','#']
+            return render_template('listaobras.html',veri=veri,nombre=nombre_docente,valores=valores,hora=datetime.now().strftime("%H:%M:%S"))
     else:
         return render_template('index.html');
 
@@ -82,31 +60,53 @@ def procesar():
 
 @app.route('/muestraPDF' ,methods=['POST'])
 def muestraPDF():
-    c=verificarFe()
     mp = PDF()
     mp.carta()##pasarle la data de viaticos
-    return render_template('viaticos.html',veri=c)
+    return render_template('viaticos.html')
 
 
 
-@app.route('/asiste' ,methods=['POST'])
+@app.route('/asiste', methods=['GET', 'POST'])
 def asiste():
-    c=verificarFe()
-    return render_template('asistencia.html',veri=c)
+    global identificacion, nombre_docente, idobra, consecutivo_calendario
+    valores = consultasbd.asistentes_obra(idobra, consecutivo_calendario)
+    if request.method=="POST":
+        for dato in request.form:
+            conscal = consultasbd.consecutivo_asistencia()
+            consultasbd.actualizar_asistencia(conscal+1, dato, idobra, consecutivo_calendario)
+            
+    return render_template('asistencia.html',valores=valores)
 
-
-
-
-@app.route('/viatic')
+@app.route('/viatic', methods=['GET', 'POST'])
 def viatic():
-    c=verificarFe()
-    return render_template('viaticos.html',veri=c)
+    global identificacion, nombre_docente, idobra
+    valores = consultasbd.estudiantes_viaticos(idobra)
+    pdf = ''
+    if request.method=="POST":
+        pdf = '/static/form.pdf'
+        #desactivar obra y generar pdf
+    return render_template('viaticos.html',valores=valores,pdf=pdf)
 
 @app.route('/certifica')
 def certifica():
-    c=verificarFe()
-    return render_template('certificados.html',veri=c)
+    global identificacion, nombre_docente, idobra
+    valores=consultasbd.obras_inactivas(identificacion)
+    return render_template('certificados.html', valores=valores)
 
+
+@app.route('/listaobras', methods=['POST', 'GET'])
+def listaobras():
+    global identificacion, nombre_docente, idobra
+    if request.method=="POST":
+        idobra=request.form['obras']
+        valores = consultasbd.obras_inactivas(identificacion)
+        veri = ['#','#','certifica']
+        return render_template('listaobras.html',veri=veri,nombre=nombre_docente,valores=valores,hora=datetime.now().strftime("%H:%M:%S"))
+
+
+    valores = consultasbd.obras_inactivas(identificacion)
+    veri = ['#','#','#']
+    return render_template('listaobras.html',veri=veri,nombre=nombre_docente,valores=valores,hora=datetime.now().strftime("%H:%M:%S"))
 
 
 if __name__ == '__main__':

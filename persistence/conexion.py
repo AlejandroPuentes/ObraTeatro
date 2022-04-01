@@ -2,7 +2,7 @@ import cx_Oracle
 
 class ConexionBD:
 
-    def __init__(self, clave='clave06', usuario='usuario03'):
+    def __init__(self, clave='clavemodulo', usuario='usuariomodulo'):
         self.clave = clave
         self.usuario = usuario
         self.conexion = None

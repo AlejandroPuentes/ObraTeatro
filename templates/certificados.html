@@ -13,19 +13,23 @@
     <header>
         <h1 class="titulop">Grupo de Teatro Universidad Distrital</h1>
     </header>
-    <nav>
-        <a href="{{veri[0]}}" class="nav-enlace">Home</a>
-        <a href="{{veri[1]}}" class="nav-enlace">Registro</a>
-        <a href="{{veri[2]}}" class="nav-enlace">Contactenos</a>
-
-    </nav>
     <hr>
 
     <section>
         <div class="container">
             <button class="btn-Enviar">generar certificados</button>
         </div>
-
+        <div>
+            <form>
+                <input type="text" name="codigo">
+                <select name="select">
+                    {%for id,titulo in valores%}
+                    <option value="{{id}}">{{titulo}}</option>
+                    {% endfor %}
+                  </select>
+                <button>Generar</button>
+            </form>
+        </div>
     </section>
     <hr>
 

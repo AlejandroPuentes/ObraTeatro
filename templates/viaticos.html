@@ -13,45 +13,36 @@
     <header>
         <h1 class="titulop">Grupo de Teatro Universidad Distrital</h1>
     </header>
-    <nav>
-        <a href="{{veri[0]}}" class="nav-enlace">Asistencia</a>
-        <a href="{{veri[1]}}" class="nav-enlace">Viaticos</a>
-        <a href="{{veri[2]}}" class="nav-enlace">Certificados</a>
-
-    </nav>
     <hr>
-
     <section>
         <div class="container">
             <div class="centradito">
-                <form method="post" action="{{url_for('muestraPDF')}}">
+                <form method="post" action="{{url_for('viatic')}}">
 
                     <table border="1">
-                        {%for id,titulo in valores%}
                         <tr>
 
-                            <td>{{id}}</td>
-                            <td>{{titulo}}</td>
-                            <td>
-                                <div>
-                                    <input type="radio" id="Asistio" name="Asistio" value="1">
-                                    <label for="Asistio">Asistio</label>
-                                </div>
+                            <td>Nombre</td>
+                            <td>Sesión</td>
+                            <td>Horas</td>
 
-                            </td>
+                        </tr>
+                        {%for nombre, correo, tipo, horas in valores%}
+                        <tr>
+
+                            <td>{{nombre}}</td>
+                            <td>{{tipo}}</td>
+                            <td>{{horas}}</td>
 
                         </tr>
 
                         {% endfor %}
 
                     </table>
-                    <button onclick="">Enviar</button>
+                    <button onclick="submit">Enviar</button>
                 </form>
-                <iframe src="{{ url_for('static', filename='form.pdf' ) }}" frameborder="0" width="80%" height="80%"></iframe>
-
-
-
             </div>
+            <iframe src="{{pdf}}" frameborder="0" width="100%" height="1000%"></iframe>
         </div>
 
     </section>

@@ -14,10 +14,8 @@
         <h1 class="titulop">Grupo de Teatro Universidad Distrital</h1>
     </header>
     <nav>
-        <!--<a href="{{veri[0]}}" class="nav-enlace">Asistencia</a>
-        <a href="{{veri[1]}}" class="nav-enlace">Viaticos</a>
-        <a href="{{veri[2]}}" class="nav-enlace">Certificados</a>-->
-        <p>{{veri.0}}</p>
+    
+        <p></p>
 
     </nav>
     <hr>
@@ -25,35 +23,25 @@
     <section>
         <div class="container">
             <div class="centradito">
-                <form method="post" action="{{url_for('procesar')}}">
-                    <table border="1" class="default">
+                <form id='formulario' name='formulario' method="post" action="{{url_for('asiste')}}">
+                    <table border="2">
+                        {%for codigo, nombre in valores%}
                         <tr>
-                            <td>Titulo de la obra</td>
-                        </tr>
-                        <tr>
-
-                            <td>Nombre</td>
-
-                            <td>Apellido</td>
-
+                            <td>{{nombre}}</td>
                             <td>
                                 <div>
-                                    <input type="radio" id="Asistio" name="Asistio" value="1">
+                                    <input type="checkbox" id="Asistio" name="{{codigo}}" value="0">
                                     <label for="Asistio">Asistio</label>
                                 </div>
 
-                                <div>
-
-                                </div>
                             </td>
 
                         </tr>
 
-
+                        {% endfor %}
 
                     </table>
-
-                    <button onclick="">Enviar</button>
+                    <button>Enviar</button>
                 </form>
 
             </div>

@@ -64,8 +64,8 @@ class PDF:
         self.canvas.save()
         self.movidaPDF()
 
-pdf = PDF()
-pdf.carta()
+'''pdf = PDF()
+pdf.carta()'''
 '''number='informe'
 pdf_name = number + ".pdf"
 save_name = os.path.join(os.path.expanduser("~"), "static/", pdf_name)

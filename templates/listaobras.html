@@ -28,6 +28,21 @@
                 <h4>{{nombre}}</h4>
 
                 <h4>{{hora}}</h4>
+                <form id='formulario' name='formulario' method="post" action="{{url_for('listaobras')}}">
+                    <table border="2">
+                        {%for id,titulo in valores%}
+                        <tr>
+                            <td>{{titulo}}</td>
+                            <td>
+                                <div>
+                                    <input type="radio" id="obras" name="obras" value="{{id}}">
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <button>Enviar</button>
+                </form>
             </div>
 
         </div>
