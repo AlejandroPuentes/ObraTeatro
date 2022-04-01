@@ -119,6 +119,20 @@ class Consultas:
         self.conexion.desconectar() 
         return int(resultado[0][0])
 
+    def pdfviatico(self,idObra):
+        conexion = self.conexion.conectar()
+        sql = (f'''SELECT E."nombre" || ' ' || E."apellido" estudiante, E."correo" correo, E."CodEstudiante",count("consecAsis") sesiones, SUM(TO_NUMBER(TO_CHAR("horaFin", 'HH24')) - TO_NUMBER(TO_CHAR("horaInicio", 'HH24'))) horas
+                    FROM "Estudiante" E, "AsistenciaEstudiante" A, "Calendario" C, "TipoCalendario" T
+                    WHERE E."CodEstudiante" = A."CodEstudiante" AND 
+                        C."idObra" = A."idObra" AND 
+                        C."conseCalendario" = A."conseCalendario" AND 
+                        T."idTipoCalen" = C."idTipoCalen" AND 
+                        A."idObra" = {int(idObra)}
+                    GROUP BY E."nombre" || ' ' || E."apellido", E."correo", E."CodEstudiante"''')
+        cursor = conexion.cursor()
+        resultado = list(cursor.execute(sql))
+        self.conexion.desconectar() 
+        return resultado
 
     def estudianteObra(self, codi):
         conexion = self.conexion.conectar()
