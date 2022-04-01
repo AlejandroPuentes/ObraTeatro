@@ -83,11 +83,11 @@ def viatic():
     valores = consultasbd.estudiantes_viaticos(idobra)
     pdf = ''
     if request.method=="POST":
-        pdf = '/static/form.pdf'
-        
+        pdf = '/static/form.pdf'  
+        data= consultasbd.pdfviatico(idobra) 
         Gpdf= PDF()
-        Gpdf.carta()
-        #desactivar obra y generar pdf
+        Gpdf.carta(data)
+        #desactivar obra 
     return render_template('viaticos.html',valores=valores,pdf=pdf)
 
 @app.route('/certifica', methods=['GET','POST'])
