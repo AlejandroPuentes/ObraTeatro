@@ -118,6 +118,21 @@ class Consultas:
         resultado = list(cursor.execute(sql))
         self.conexion.desconectar() 
         return int(resultado[0][0])
+
+
+    def estudianteObra(self, codi):
+        conexion = self.conexion.conectar()
+        sql = (f'''Select O."idObra" ,O."titulo" 
+                    from  "PersonajeEstudiante" E, "Personaje" P, "Obra" O
+                    where E."idPersonaje" = P."idPersonaje" and 
+                        E."idObra" = P."idObra" and 
+                        O."idObra" = P."idObra" AND
+                        E."CodEstudiante"={codi} and
+                        O."estado"= 0''')
+        cursor = conexion.cursor()
+        resultado = list(cursor.execute(sql))
+        self.conexion.desconectar() 
+        return resultado
         
 
 

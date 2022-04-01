@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/style.css">
-    <title>Certificados</title>
-</head>
+{%extends 'layout.html' %} {%block body%}
 
 <body>
     <header>
@@ -20,14 +11,9 @@
             <button class="btn-Enviar">generar certificados</button>
         </div>
         <div>
-            <form>
+            <form method="post" action="certifica">
                 <input type="text" name="codigo">
-                <select name="select">
-                    {%for id,titulo in valores%}
-                    <option value="{{id}}">{{titulo}}</option>
-                    {% endfor %}
-                  </select>
-                <button>Generar</button>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
     </section>
@@ -35,5 +21,4 @@
 
 
 </body>
-
-</html>
+{%endblock%}

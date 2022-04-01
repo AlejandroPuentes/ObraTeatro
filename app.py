@@ -87,11 +87,18 @@ def viatic():
         #desactivar obra y generar pdf
     return render_template('viaticos.html',valores=valores,pdf=pdf)
 
-@app.route('/certifica')
+@app.route('/certifica', methods=['GET','POST'])
 def certifica():
     global identificacion, nombre_docente, idobra
-    valores=consultasbd.obras_inactivas(identificacion)
-    return render_template('certificados.html', valores=valores)
+    ##
+    if request.method == 'POST':
+        idEstudiante=request.form['codigo']
+        valores=consultasbd.estudianteObra(idEstudiante)
+        print (valores)
+        return render_template('certificados2.html', valores=valores)
+    return render_template('certificados.html')
+    
+
 
 
 @app.route('/listaobras', methods=['POST', 'GET'])
