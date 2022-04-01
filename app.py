@@ -84,6 +84,9 @@ def viatic():
     pdf = ''
     if request.method=="POST":
         pdf = '/static/form.pdf'
+        
+        Gpdf= PDF()
+        Gpdf.carta()
         #desactivar obra y generar pdf
     return render_template('viaticos.html',valores=valores,pdf=pdf)
 
